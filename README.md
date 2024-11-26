@@ -2,13 +2,11 @@
  "PawPrints: Integrated Solution for Animal Welfare and Adoption Services" is a comprehensive platform designed to streamline and enhance the processes involved in animal care, welfare, and adoption. It aims to bridge the gap between animal shelters, welfare organizations, and potential adopters by offering integrated features such as animal tracking, adoption management, and updates. The solution prioritizes the well-being of animals while ensuring a user-friendly experience for staff and adopters alike. Through innovative technology, PawPrints fosters a community-driven approach to animal welfare, promoting responsible pet ownership and making it easier to find loving homes for animals in need.
 
 ## Tech Stacks
- - Laravel ( PHP Framework )
+ - PHP
  - Inertia ( Javascript Framework )
- - Tailwind ( CSS Framework )
+ - Bootstrap ( CSS Framework )
  - Mysql
- - Docker
- - Reverb (Laravel WebSocket)
- - Caddy ( WebServer )
+ - Apache ( WebServer )
 ## Pre requisites
 Download the following packages
 - Docker
