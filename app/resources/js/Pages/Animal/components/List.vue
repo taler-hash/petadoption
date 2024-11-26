@@ -55,7 +55,7 @@ import UpdateAnimalDialog from './UpdateAnimalDialog.vue';
 import { onMounted, provide, ref } from 'vue';
 import axios from 'axios';
 import { useDebounceFn } from '@vueuse/core';
-import { FilterWithRoleTypes, UserPaginationTypes } from '../Types/AnimalTypes';
+import { FilterAnimalTypes, AnimalPaginationTypes } from '../Types/AnimalTypes';
 import { useConfirm } from 'primevue';
 import { useForm } from '@inertiajs/vue3';
 import { useToast } from 'primevue';
@@ -65,14 +65,13 @@ const toast = useToast()
 const form = useForm<{ id?: number }>({})
 const confirm = useConfirm()
 const props = defineProps(['role'])
-const data = ref<UserPaginationTypes>()
-const filters = ref<FilterWithRoleTypes>({
+const data = ref<AnimalPaginationTypes>()
+const filters = ref<FilterAnimalTypes>({
     page: 1,
     sortBy: 'id',
     sortType: 'desc',
     rows: 10,
     searchString: '',
-    role: props?.role,
 })
 
 onMounted(() => {
