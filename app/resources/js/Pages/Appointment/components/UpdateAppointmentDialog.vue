@@ -25,7 +25,6 @@
     </Dialog>
 </template>
 <script setup lang="ts">
-import {Button, Select} from 'primevue';
 import { InputText } from 'primevue';
 import InputError from '@/Components/InputError.vue';
 import { Dialog } from 'primevue';
@@ -35,7 +34,11 @@ import { useToast } from 'primevue';
 import { AppointmentTypes } from '../Types/AppointmentTypes';
 
 const toast = useToast()
-const form = useForm<AppointmentTypes>({})
+const form = useForm<AppointmentTypes>({
+    adopter: {name: '', email: null, phone: null},
+    animal: {name: ''},
+    status: ''
+})
 const reloadTable = inject<any>('reloadTable')
 const visible = ref<boolean>(false)
 const statusOptions = ref<string[]>()

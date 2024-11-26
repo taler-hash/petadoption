@@ -28,7 +28,7 @@
                         <DatePicker :disabledDays="[0, 6]"
                             :min-date="new Date(new Date().setDate(new Date().getDate() + 3))" id="date"
                             v-model="form.appointment_date" aria-describedby="date-help" required />
-                        <InputError :message="form.errors.date" />
+                        <InputError :message="form.errors.appointment_date" />
                     </div>
                     <div class="pt-4">
                         <Button type="submit" severity="success" label="submit" class="w-full" />

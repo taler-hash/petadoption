@@ -1,6 +1,6 @@
 <template>
     <Dialog v-model:visible="visible" modal :header="`Pet`" @hide="close">
-        <form @submit.prevent="submit" class="space-y-4">
+        <div class="space-y-4">
             <div class="flex items-center lg:flex-row flex-col space-x-2">
                 <div class="w-full lg:w-fit space-y-3">
                     <div class="flex flex-col gap-2">
@@ -37,7 +37,7 @@
                     <img v-if="form.media?.[0].original_url" :src="form.media?.[0].original_url" alt="Image" class="shadow-md rounded-xl w-64" />
                 </div>
             </div>
-        </form>
+        </div>
     </Dialog>
 </template>
 <script setup lang="ts">

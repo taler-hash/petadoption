@@ -95,7 +95,7 @@ async function submit() {
     })
 }
 
-function onFileSelect(event) {
+function onFileSelect(event: any) {
     const file = event.files[0];
     const reader = new FileReader();
 

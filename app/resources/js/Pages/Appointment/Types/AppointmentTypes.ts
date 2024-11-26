@@ -21,8 +21,8 @@ export interface PaginationTypes {
 export interface AppointmentTypes {
     code?: string|null
     appointment_date?: string|null,
-    animal?: AnimalTypes,
-    adopter?: AdopterTypes,
+    animal: AnimalTypes,
+    adopter: AdopterTypes,
     parsed_appointment_date?: string,
     status: string
 }
