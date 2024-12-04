@@ -11,7 +11,7 @@
                 Cruelty in the Philippines, none of it is possible without your support.
             </p>
             <div v-for="count in counts" class="text-center px-10 py-16">
-                <p class="text-7xl text-green-600"><CountUp :end-val="count.count"/></p>
+                <p class="text-7xl text-orange-600"><CountUp :end-val="count.count"/></p>
                 <p class="text-3xl text-amber-500">{{ count.description }}</p>
             </div>
             <p class="font-fig text-lg text-justify">
@@ -19,7 +19,7 @@
                 so well after a good meal makes all the effort and struggles worth it.
             </p>
             <div class="font-fig text-lg text-start w-full">
-                For tracking purposes, kindly send your proof of donation to: <span class="font-sans text-green-500">donations@pawprints.org.</span>
+                For tracking purposes, kindly send your proof of donation to: <span class="font-sans text-orange-500">donations@pawprints.org.</span>
             </div>
         </div>
     </div>

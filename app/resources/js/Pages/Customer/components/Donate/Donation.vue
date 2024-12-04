@@ -1,7 +1,7 @@
 <template>
     <div class="w-full p-20 px-8 grid place-items-center">
         <div class="max-w-7xl flex flex-wrap justify-center space-y-8">
-            <div class="w-full p-3 bg-green-700 text-amber-500 text-3xl text-center">
+            <div class="w-full p-3 bg-orange-700 text-amber-500 text-3xl text-center">
                 Official Donation Channels
             </div>
             <div class="w-full flex flex-wrap justify-center">

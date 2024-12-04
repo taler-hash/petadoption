@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full p-20 px-8 bg-green-700 grid place-items-center">
+    <div class="w-full p-20 px-8 bg-orange-700 grid place-items-center">
         <div class="max-w-7xl flex flex-wrap justify-center">
             <div v-for="count in counts" class="text-slate-200 text-center p-16">
                 <p class="text-7xl"><CountUp :end-val="count.count"/></p>

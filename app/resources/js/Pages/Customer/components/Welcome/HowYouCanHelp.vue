@@ -5,7 +5,7 @@
                 How You Can Help
             </p>
             <div class="flex flex-wrap items-center justify-center">
-                    <div v-for="card in cards" class="w-72 m-5 space-y-4 rounded-lg border px-6 py-2 h-96 flex flex-col justify-start text-gray-200 bg-green-800">
+                    <div v-for="card in cards" class="w-72 m-5 space-y-4 rounded-lg border px-6 py-2 h-96 flex flex-col justify-start text-gray-200 bg-orange-800">
                         <div>
                             <p class="text-center text-3xl font-bold text-amber-500">{{ card.title }}</p>
                         </div>

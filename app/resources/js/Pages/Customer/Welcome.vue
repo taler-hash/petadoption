@@ -1,6 +1,6 @@
 <template>
 
-    <Head title="Paw Prints" />
+    <Head title="Main" />
     <CustomerLayout>
         <div class="w-full flex justify-center">
             <div class="w-full space-y-32">

@@ -85,7 +85,7 @@ onMounted(() => {
 
                 <div
                     v-show="status === 'verification-link-sent'"
-                    class="mt-2 text-sm font-medium text-green-600"
+                    class="mt-2 text-sm font-medium text-orange-600"
                 >
                     A new verification link has been sent to your email address.
                 </div>
