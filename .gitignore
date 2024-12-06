@@ -2,4 +2,4 @@
 /app/.gitignore
 /app/node_modules*
 /app/vendor*
-/public/build/*
+/app/public/build/*
