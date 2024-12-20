@@ -15,8 +15,11 @@ class AppointmentService {
     public function getAppointments($request) {
         $model = new Appointment();
 
-        $appointments = Appointment::with(['animal.media', 'adopter'])
+        $appointments = Appointment::with(['animal.media', 'animal.shelter', 'adopter'])
         ->whereAny($model->getFillable(), 'LIKE', "%{$request->searchString}%")
+        ->when(!empty($request?->shelter), function($q) use ($request) {
+            $q->where('shelter_id', $request->shelter);
+        })
         ->orWhereHas('animal', function ($query) use ($request) {
             $query->where('name', 'LIKE', "%{$request->searchString}%");
         })
@@ -38,7 +41,7 @@ class AppointmentService {
                 'adopter_id' => $adopter->id,
                 'animal_id' => $animal->id,
                 'status' => 'pending',
-                'appointment_date' => Carbon::parse($request->appointment_date)->format('Y-m-d')
+                'appointment_date' => Carbon::parse($request->appointment_date)->addDay()->format('Y-m-d')
             ]);
 
             return base64_encode($appointment->id);
@@ -51,7 +54,7 @@ class AppointmentService {
             return response()->json(['code' => 'code not valid'], 422);
         } else {
             $id = base64_decode($request->code);
-            return response()->json(Appointment::with(['animal.media', 'adopter'])->find($id));
+            return response()->json(Appointment::with(['animal.media', 'animal.shelter','adopter'])->find($id));
         }
     }
 
@@ -77,6 +80,14 @@ class AppointmentService {
     }
 
     public function getAppointmentCount() {
-        return Appointment::count();
+        $shelter = auth()->user()->shelter?->id;
+
+        return Appointment::with('animal')
+        ->whereHas('animal', function($q) use ($shelter) {
+            $q->when(!empty($shelter), function($q2) use ($shelter) {
+                $q2->where('shelter_id', $shelter);
+            });
+        })
+        ->count();
     }
 }

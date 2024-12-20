@@ -8,8 +8,11 @@ class AnimalService {
 
     public function getAnimals($request) {
         $model = new Animal();
-        $animals = Animal::with('media')
+        $animals = Animal::with(['media', 'shelter'])
         ->whereAny($model->getFillable(), 'LIKE', "%{$request->searchString}%")
+        ->when(!empty($request?->shelter), function($q) use ($request) {
+            $q->where('shelter_id', $request->shelter);
+        })
         ->when($request?->type, function($q) use ($request) {
             $q->where('type', $request->type);
         })
@@ -48,7 +51,11 @@ class AnimalService {
     }
 
     public function getAnimalCount() {
-        return Animal::count();
+        $shelter = auth()->user()->shelter?->id;
+
+        return Animal::when(!empty($shelter), function($q) use ($shelter) {
+            $q->where('shelter_id', $shelter);
+        })->count();
     }
     
 }

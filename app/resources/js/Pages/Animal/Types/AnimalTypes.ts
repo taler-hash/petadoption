@@ -1,4 +1,5 @@
 import { AppointmentTypes } from "@/Pages/Appointment/Types/AppointmentTypes"
+import { ShelterTypes } from "@/Pages/Shelter/Types/ShelterTypes"
 
 export interface FilterAnimalTypes {
     page?: number,
@@ -7,7 +8,8 @@ export interface FilterAnimalTypes {
     rows?: number,
     searchString?: string,
     type?: string|null,
-    status?: string|null
+    status?: string|null,
+    shelter?: number|null
 }
 
 export interface PaginationTypes {
@@ -34,6 +36,8 @@ export interface AnimalTypes {
         original_url?: string
     }[],
     appointment?: AppointmentTypes
+    shelter_id?: number
+    shelter?: ShelterTypes
 }
 
 export interface AnimalPaginationTypes extends PaginationTypes {

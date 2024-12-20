@@ -30,6 +30,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $request->user()?->roles;
+        $request->user()?->shelter;
         
         return [
             ...parent::share($request),

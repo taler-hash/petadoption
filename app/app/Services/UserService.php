@@ -6,7 +6,11 @@ use App\Models\User;
 class UserService {
     public function getUsers($request) {
         $model = new User();
-        $users = User::whereHas('roles', function ($q) use ($request) {
+        $users = User::with('shelter')
+        ->when(!empty($request?->shelter), function($q) use ($request) {
+            $q->where('shelter_id', $request->shelter);
+        })
+        ->whereHas('roles', function ($q) use ($request) {
             $q->when($request?->role, function ($q2) use ($request) {
                 $q2->where('name', $request->role);
             });

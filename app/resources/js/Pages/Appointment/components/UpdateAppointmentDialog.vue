@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { InputText } from 'primevue';
 import InputError from '@/Components/InputError.vue';
-import { Dialog } from 'primevue';
+import { Dialog, Select, Button } from 'primevue';
 import { inject, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { useToast } from 'primevue';

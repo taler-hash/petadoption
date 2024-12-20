@@ -6,6 +6,7 @@
             <div class="flex flex-wrap items-center justify-between">
                 <div  class="flex items-center space-x-2">
                     <SearchInput @callback="reloadTable()"/>
+                    <LazySelect module="shelters" label="name" v-model="filters.shelter" @callback="reloadTable()" placeholder="Select Shelter" />
                 </div>
                 <div class="flex items-center-space-x-2">
                     <Button outlined icon="pi pi-plus" severity="success" @click="$refs.ssd?.open()" />
@@ -14,6 +15,7 @@
         </template>
         <Column field="name" header="Name" sortable />
         <Column field="username" header="Username" sortable />
+        <Column field="shelter.name" header="Shelter"/>
         <Column style="width: 10%">
             <template #header>
                 <p class="text-center w-full">Actions</p>
@@ -46,6 +48,7 @@ import { FilterWithRoleTypes, UserPaginationTypes } from '../Types/StaffTypes';
 import { useConfirm } from 'primevue';
 import { useForm } from '@inertiajs/vue3';
 import { useToast } from 'primevue';
+import LazySelect from '@/Components/Lazyselect/LazySelect.vue';
 
 const toast = useToast()
 const form = useForm<{id?: number}>({})

@@ -18,7 +18,8 @@ class Animal extends Model implements HasMedia
         'age',
         'status',
         'color',
-        'breed'
+        'breed',
+        'shelter_id'
     ];
 
     /**
@@ -35,5 +36,9 @@ class Animal extends Model implements HasMedia
     public function adoption()
     {
         return $this->hasOne(Adoption::class);
+    }
+
+    public function shelter() {
+        return $this->belongsTo(Shelter::class);
     }
 }

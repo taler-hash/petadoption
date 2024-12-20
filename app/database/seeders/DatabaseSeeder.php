@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Animal;
+use Database\Seeders\ShelterSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,9 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $shelters = new ShelterSeeder();
         $roles = new RoleSeeder();
         $users = new UserSeeder();
 
+        $shelters->run();
         $roles->run();
         $users->run();
     }

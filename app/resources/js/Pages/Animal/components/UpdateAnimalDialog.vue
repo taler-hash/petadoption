@@ -4,6 +4,10 @@
             <div class="flex items-center lg:flex-row flex-col space-x-2">
                 <div class="w-full lg:w-fit space-y-3">
                     <div class="flex flex-col gap-2">
+                        <label for="status">Shelter</label>
+                        <LazySelect label="name" module="shelters" v-model="form.shelter_id" :disabled="true"/>
+                    </div>
+                    <div class="flex flex-col gap-2">
                         <label for="name">Name</label>
                         <InputText id="name" v-model="form.name" aria-describedby="name-help" required />
                         <InputError :message="form.errors.name" />
@@ -25,8 +29,8 @@
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="description">description</label>
-                        <InputText id="description" v-model="form.description" aria-describedby="description-help"
-                            required />
+                        <Textarea id="description" v-model="form.description" aria-describedby="description-help"
+                            rows="5" cols="30" required />
                         <InputError :message="form.errors.description" />
                     </div>
                     <div class="flex flex-col gap-2">
@@ -52,13 +56,14 @@
 </template>
 <script setup lang="ts">
 import { Button } from 'primevue';
-import { InputText, InputNumber, FileUpload, Select } from 'primevue';
+import { InputText, InputNumber, FileUpload, Select, Textarea } from 'primevue';
 import InputError from '../../../Components/InputError.vue'
 import { Dialog } from 'primevue';
 import { inject, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { AnimalTypes } from '../Types/AnimalTypes'
 import { useToast } from 'primevue';
+import LazySelect from '@/Components/Lazyselect/LazySelect.vue';
 
 const toast = useToast()
 const form = useForm<AnimalTypes>({

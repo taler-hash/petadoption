@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Shelter;
 
 class UserSeeder extends Seeder
 {
@@ -22,10 +23,13 @@ class UserSeeder extends Seeder
 
         $admin->assignRole('admin');
 
+        $shelter = Shelter::find(1);
+
         $staff = User::create([
             'name' => 'staff',
             'username' => 'staff',
-            'password' => Hash::make('taler113099')
+            'password' => Hash::make('taler113099'),
+            'shelter_id' => $shelter->id
         ]);
 
         $staff->assignRole('staff');

@@ -22,9 +22,9 @@ class CreateAppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:adopters,name,'.$this->id],
-            'phone' => ['required', 'unique:adopters,phone,'.$this->id],
-            'email' => ['required', 'email' ,'unique:adopters,email,'.$this->id],
+            'name' => ['required'],
+            'phone' => ['required'],
+            'email' => ['required'],
             'appointment_date' => ['required']
         ];
     }

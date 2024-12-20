@@ -2,6 +2,11 @@
     <Dialog v-model:visible="visible" modal :header="`Update Staff`" @hide="close">
         <form @submit.prevent="submit" class="space-y-4">
             <div class="flex flex-col gap-2">
+                <label for="status">Shelter</label>
+                <LazySelect label="name" module="shelters" v-model="form.shelter_id" required />
+                <InputError :message="form.errors.shelter_id" />
+            </div>
+            <div class="flex flex-col gap-2">
                 <label for="name">Name</label>
                 <InputText id="name" v-model="form.name" aria-describedby="name-help" required />
                 <InputError :message="form.errors.name" />
@@ -31,11 +36,13 @@ import { inject, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { UserTypes } from '../Types/StaffTypes'
 import { useToast } from 'primevue';
+import LazySelect from '@/Components/Lazyselect/LazySelect.vue';
 
 const toast = useToast()
 const form = useForm<UserTypes>({
     username: '',
     name: '',
+    shelter_id: undefined
 })
 const reloadTable = inject<any>('reloadTable')
 const visible = ref<boolean>(false)

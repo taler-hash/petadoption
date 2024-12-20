@@ -5,11 +5,12 @@
             <header class="sticky top-0 bg-white shadow flex items-center justify-between px-2 z-[99]" v-if="$slots.header">
                 <div class="flex items-center">
                     <!-- Logo -->
-                    <div class="flex shrink-0 items-center">
+                    <div class="flex shrink-0 items-center justify-center flex-col">
                         <Link :href="route('dashboard')">
-                        <img :src="Logo" alt="" class="w-40 h-20 object-contain cursor-pointer"
-                            @click="handleRoute('dashboard')">
+                            <img :src="Logo" alt="" class="w-40 h-20 object-contain cursor-pointer"
+                                @click="handleRoute('dashboard')">
                         </Link>
+                        <p class="text-xs uppercase">{{ $page.props.auth.user.shelter?.name }}</p>
                     </div>
                 </div>
                 <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -26,7 +27,6 @@
                                     <button type="button"
                                         class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none">
                                         {{ $page.props.auth.user.name }}
-
                                         <svg class="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd"
@@ -51,7 +51,7 @@
             </header>
 
             <!-- Page Content -->
-            <main class="flex w-full h-[calc(100%-5rem)]">
+            <main class="flex w-full h-[calc(100%-6rem)]">
                 <Toast />
                 <ConfirmDialog />
                 <SideBar>

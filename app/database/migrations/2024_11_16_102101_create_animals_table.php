@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['cat', 'dog']);
+            $table->foreignId('shelter_id')->constrained('shelters')->onDelete('cascade');
+            $table->enum('type', ['cat', 'dog']);   
             $table->string('name');
             $table->string('color')->nullable();
             $table->string('breed')->nullable();

@@ -50,22 +50,28 @@ const navItems = ref<any>([
         show: page.props.auth.user.roles.some((v: any) => ['admin'].includes(v.name))
     },
     {
+        name: 'Shelters',
+        icon: 'pi pi-home',
+        callBack: (() => router.visit('shelters')),
+        show: page.props.auth.user.roles.some((v: any) => ['admin'].includes(v.name))
+    },
+    {
         name: 'Animals',
         icon: 'pi pi-heart-fill',
         callBack: (() => router.visit('animals')),
-        show: page.props.auth.user.roles.some((v: any) => ['admin', 'staff'].includes(v.name))
+        show: page.props.auth.user.roles.some((v: any) => ['staff'].includes(v.name))
     },
     {
         name: 'Appointments',
         icon: 'pi pi-calendar',
         callBack: (() => router.visit('appointments')),
-        show: page.props.auth.user.roles.some((v: any) => ['admin', 'staff'].includes(v.name))
+        show: page.props.auth.user.roles.some((v: any) => ['staff'].includes(v.name))
     },
     {
         name: 'Adoptions',
         icon: 'pi pi-home',
         callBack: (() => router.visit('adoptions')),
-        show: page.props.auth.user.roles.some((v: any) => ['admin', 'staff'].includes(v.name))
+        show: page.props.auth.user.roles.some((v: any) => ['staff'].includes(v.name))
     },
 ]);
 </script>

@@ -5,6 +5,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AdoptionController;
+use App\Http\Controllers\ShelterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
@@ -38,23 +39,26 @@ Route::middleware('auth')->group(function () {
     // Animals
     Route::controller(AnimalController::class)
     ->prefix('/animals')
-    ->middleware(['role:admin|staff'])
     ->group(function() {
-        Route::get('/', 'display')->name('animals.display');
-        Route::get('/index', 'index')->name('animals.index');
-        Route::get('/create', 'create')->name('animals.create');
-        Route::post('/store', 'store')->name('animals.store');
-        Route::get('/show', 'show')->name('animals.show');
-        Route::get('/edit', 'edit')->name('animals.edit');
-        Route::put('/update', 'update')->name('animals.update');
-        Route::delete('/delete', 'delete')->name('animals.delete');
         Route::get('/count', 'count')->name('animals.count');
+
+        Route::middleware(['role:staff'])->group(function() {
+            Route::get('/', 'display')->name('animals.display');
+            Route::get('/index', 'index')->name('animals.index');
+            Route::get('/create', 'create')->name('animals.create');
+            Route::post('/store', 'store')->name('animals.store');
+            Route::get('/show', 'show')->name('animals.show');
+            Route::get('/edit', 'edit')->name('animals.edit');
+            Route::put('/update', 'update')->name('animals.update');
+            Route::delete('/delete', 'delete')->name('animals.delete');
+        });
+        
     });
 
     //Appointments
     Route::controller(AppointmentController::class)
     ->prefix('/appointments')
-    ->middleware(['role:admin|staff'])
+    ->middleware(['role:staff'])
     ->group(function() {
         Route::get('/', 'display')->name('appointments.display');
         Route::get('/index', 'index')->name('appointments.index');
@@ -67,10 +71,31 @@ Route::middleware('auth')->group(function () {
         Route::get('/count', 'count')->name('appointments.count');
     });
 
+    // Shelters
+    Route::controller(ShelterController::class)
+    ->prefix('/shelters')
+    ->name('shelters.')
+    ->group(function() {
+
+        Route::get('/index', 'index')->name('index');
+        Route::get('/show', 'show')->name('show');
+
+        Route::middleware(['role:admin'])->group(function() {
+            Route::get('/', 'display')->name('display');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit', 'edit')->name('edit');
+            Route::put('/update', 'update')->name('update');
+            Route::delete('/delete', 'delete')->name('delete');
+            Route::get('/count', 'count')->name('count');
+        });
+        
+    });
+
     //Adoptions
     Route::controller(AdoptionController::class)
     ->prefix('/adoptions')
-    ->middleware(['role:admin|staff'])
+    ->middleware(['role:staff'])
     ->group(function() {
         Route::get('/', 'display')->name('adoptions.display');
         Route::get('/index', 'index')->name('adoptions.index');
@@ -83,8 +108,10 @@ Route::middleware('auth')->group(function () {
 Route::prefix('/customer')
 ->group(function() {
     Route::get('/animals/index', [AnimalController::class, 'index'])->name('customers.animals.index');
+    Route::get('/shelters/index', [ShelterController::class, 'index'])->name('customers.shelters.index');
     Route::post('/appointments/store', [AppointmentController::class, 'store'])->name('customers.appointments.store');
     Route::get('/appointments/show', [AppointmentController::class, 'show'])->name('customers.appointments.show');
+    Route::get('/shelters/show', [ShelterController::class, 'show'])->name('customers.shelters.show');
 });
 
 $customerPages = ['Welcome', 'Donate', 'Adopt', 'Track', 'Contact'];

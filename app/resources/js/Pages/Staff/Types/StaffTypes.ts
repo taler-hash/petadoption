@@ -1,3 +1,5 @@
+import { ShelterTypes } from "@/Pages/Shelter/Types/ShelterTypes"
+
 export interface FilterWithRoleTypes {
     page?: number,
     sortBy?: string,
@@ -22,7 +24,9 @@ export interface UserTypes {
     password?:string|null,
     updated_at?: string,
     created_at?: string,
-    status?: string| null
+    status?: string| null,
+    shelter?: ShelterTypes,
+    shelter_id?: number
 }
 
 export interface UserPaginationTypes extends PaginationTypes {

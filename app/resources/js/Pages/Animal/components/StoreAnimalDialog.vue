@@ -25,8 +25,8 @@
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="description">description</label>
-                        <InputText id="description" v-model="form.description" aria-describedby="description-help"
-                            required />
+                        <Textarea id="description" v-model="form.description" aria-describedby="description-help"
+                           rows="5" cols="30" required />
                         <InputError :message="form.errors.description" />
                     </div>
                     <div class="flex flex-col gap-2">
@@ -51,14 +51,16 @@
 </template>
 <script setup lang="ts">
 import { Button } from 'primevue';
-import { InputText, InputNumber, FileUpload, Select } from 'primevue';
+import { InputText, InputNumber, FileUpload, Select, Textarea } from 'primevue';
 import InputError from '../../../Components/InputError.vue'
 import { Dialog } from 'primevue';
 import { inject, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { AnimalTypes } from '../Types/AnimalTypes'
 import { useToast } from 'primevue';
+import { usePage } from '@inertiajs/vue3';
 
+const page = usePage()
 const toast = useToast()
 const form = useForm<AnimalTypes>({
     id: null,
@@ -69,7 +71,9 @@ const form = useForm<AnimalTypes>({
     description: '',
     age: 0,
     image: null,
-    status: 'available'
+    status: 'available',
+    //@ts-ignore
+    shelter_id: page.props.auth.user?.shelter.id 
 })
 
 const reloadTable = inject<any>('reloadTable')

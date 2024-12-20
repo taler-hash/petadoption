@@ -7,6 +7,14 @@
                     size="xlarge" />
             </div>
             <div class="flex flex-col gap-2">
+                <label for="pet">Shelter</label>
+                <InputText id="pet" :value="appointment?.animal.shelter?.name" aria-describedby="name-help" disabled />
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="pet">Shelter Location</label>
+                <InputText id="pet" :value="appointment?.animal.shelter?.location" aria-describedby="name-help" disabled />
+            </div>
+            <div class="flex flex-col gap-2">
                 <label for="pet">Appointment Date</label>
                 <InputText id="pet" :value="appointment?.parsed_appointment_date" aria-describedby="name-help" disabled />
             </div>

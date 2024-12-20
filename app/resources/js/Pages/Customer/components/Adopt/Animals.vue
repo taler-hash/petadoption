@@ -1,6 +1,7 @@
 <template>
     <div class="w-full p-4 px-8 grid place-items-center">
-        <div class="max-w-7xl text-center space-y-7 space-y-10 flex flex-wrap justify-center mt-10">
+        <Shelters v-if="!filters.shelter" v-model="filters.shelter" @callback="getShelter"/>
+        <div v-else class="w-7xl text-center space-y-7 space-y-10 flex flex-wrap justify-center mt-10">
             <DataView 
                 paginator 
                 lazy 
@@ -12,8 +13,14 @@
                 :totalRecords="data?.total">
                 <template #header>
                     <div class="w-full flex justify-between">
-                        <div class="">
+                        <div class="w-full flex items-center justify-between space-x-4">
                             <Select v-model="filters.type" :options="['dog', 'cat']" @change="reloadTable()"/>
+                            <div class="">
+                                <p class="text-lg font-bold">{{ shelter.name }}</p>
+                            </div>
+                            <div class="">
+                                <Button icon="pi pi-chevron-left" severity="ghost" @click="handleBack"/>
+                            </div>
                         </div>
                     </div>
                 </template>
@@ -64,8 +71,11 @@ import { DataView, DataViewPageEvent, Select, Button } from 'primevue';
 import { AnimalPaginationTypes, FilterAnimalTypes } from '@/Pages/Animal/Types/AnimalTypes';
 import { onMounted, provide, ref } from 'vue';
 import axios from 'axios';
-const data = ref<AnimalPaginationTypes>()
+import Shelters from './Shelters.vue';
+import { ShelterTypes } from '@/Pages/Shelter/Types/ShelterTypes';
 
+const shelter = ref<ShelterTypes>({})
+const data = ref<AnimalPaginationTypes>()
 const filters = ref<FilterAnimalTypes>({
     page: 1,
     sortBy: 'id',
@@ -73,9 +83,9 @@ const filters = ref<FilterAnimalTypes>({
     rows: 10,
     searchString: '',
     type: 'dog',
-    status: 'available'
+    status: 'available',
+    shelter: undefined
 })
-
 
 onMounted(() => {
     reloadTable()
@@ -94,6 +104,23 @@ function handleChangePage(e: DataViewPageEvent) {
     filters.value.page = e.page + 1
 
     reloadTable()
+}
+
+function getShelter() {
+    axios.get(route('customers.shelters.show'), {params: { id: filters.value.shelter}})
+    .then((res) => {
+        shelter.value = res.data
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
+    reloadTable()
+}
+
+function handleBack() {
+    filters.value.shelter = undefined
+    shelter.value = {}
 }
 
 provide('reloadTable', reloadTable)

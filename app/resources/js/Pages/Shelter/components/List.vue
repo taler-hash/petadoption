@@ -6,32 +6,14 @@
             <div class="flex flex-wrap items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <SearchInput v-model="filters.searchString" @callback="reloadTable()" />
-                    <div v-if="!$page.props.auth.user?.shelter">
-                        <LazySelect module="shelters" label="name" v-model="filters.shelter" @callback="reloadTable()"
-                            placeholder="Select Shelter" />
-                    </div>
                 </div>
                 <div class="flex items-center-space-x-2">
                     <Button outlined icon="pi pi-plus" severity="success" @click="$refs.ssd?.open()" />
                 </div>
             </div>
         </template>
-        <Column header="Image">
-            <template #body="props">
-                <Avatar :image="props.data.media[0].original_url" class="mr-2" size="xlarge" shape="circle" />
-            </template>
-        </Column>
         <Column field="name" header="Name" sortable />
-        <Column field="type" header="Type" sortable />
-        <Column field="color" header="Color" sortable />
-        <Column field="breed" header="Breed" sortable />
-        <Column field="shelter.name" header="Shelter" />
-        <Column field="age" header="Age" sortable />
-        <Column field="status" header="Status">
-            <template #body="props">
-                <Badge :value="props.data.status" :class="AnimalStatusSeverity(props.data.status)" />
-            </template>
-        </Column>
+        <Column field="location" header="Location" sortable />
         <Column style="width: 10%">
             <template #header>
                 <p class="text-center w-full">Actions</p>
@@ -45,43 +27,37 @@
             </template>
         </Column>
     </DataTable>
-    <StoreAnimalDialog ref="ssd" />
-    <SeeAnimalDialog ref="sesd" />
-    <UpdateAnimalDialog ref="usd" />
+    <StoreShelterDialog ref="ssd" />
+    <SeeShelterDialog ref="sesd" />
+    <UpdateShelterDialog ref="usd" />
 </template>
 <script setup lang="ts">
 import { Column, Badge } from 'primevue';
 import { DataTable, DataTablePageEvent, DataTableSortEvent, Avatar } from 'primevue';
 import { Button } from 'primevue';
 import SearchInput from '@/Components/SearchInput/SearchInput.vue';
-import SeeAnimalDialog from './SeeAnimalDialog.vue';
-import StoreAnimalDialog from './StoreAnimalDialog.vue';
-import UpdateAnimalDialog from './UpdateAnimalDialog.vue';
+import SeeShelterDialog from './SeeShelterDialog.vue';
+import StoreShelterDialog from './StoreShelterDialog.vue';
+import UpdateShelterDialog from './UpdateShelterDialog.vue';
 import { onMounted, provide, ref } from 'vue';
 import axios from 'axios';
 import { useDebounceFn } from '@vueuse/core';
-import { FilterAnimalTypes, AnimalPaginationTypes } from '../Types/AnimalTypes';
+import { FilterShelterTypes, ShelterPaginationTypes } from '../Types/ShelterTypes';
 import { useConfirm } from 'primevue';
 import { useForm } from '@inertiajs/vue3';
 import { useToast } from 'primevue';
-import { AnimalStatusSeverity } from '@/api/AnimalStatusSeverity';
-import LazySelect from '@/Components/Lazyselect/LazySelect.vue';
-import { usePage } from '@inertiajs/vue3';
 
-const page = usePage();
 const toast = useToast()
 const form = useForm<{ id?: number }>({})
 const confirm = useConfirm()
 const props = defineProps(['role'])
-const data = ref<AnimalPaginationTypes>()
-const filters = ref<FilterAnimalTypes>({
+const data = ref<ShelterPaginationTypes>()
+const filters = ref<FilterShelterTypes>({
     page: 1,
     sortBy: 'id',
     sortType: 'desc',
     rows: 10,
     searchString: '',
-    //@ts-ignore
-    shelter: page.props.auth.user?.shelter.id
 })
 
 onMounted(() => {
@@ -89,7 +65,7 @@ onMounted(() => {
 })
 
 async function reloadTable() {
-    const res = await axios.get(route('animals.index'), { params: filters.value })
+    const res = await axios.get(route('shelters.index'), { params: filters.value })
 
     if (res.status === 200) {
         data.value = res.data
@@ -116,7 +92,7 @@ const handleSearch = useDebounceFn(() => {
 
 function handleDeleteUser(id: number) {
     confirm.require({
-        message: `Are you sure you want to delete this Animal`,
+        message: `Are you sure you want to delete this Shelter`,
         header: 'Confirmation',
         icon: 'pi pi-info-circle',
         accept: () => {
@@ -128,9 +104,9 @@ function handleDeleteUser(id: number) {
 function submitDeleteUser(id: number) {
     form.defaults({ id: id })
     form.reset()
-    form.delete(route('animals.delete'), {
+    form.delete(route('shelters.delete'), {
         onSuccess: () => {
-            toast.add({ severity: 'success', summary: 'Success', detail: `Deleted Animal Successfully`, life: 3000 });
+            toast.add({ severity: 'success', summary: 'Success', detail: `Deleted Shelter Successfully`, life: 3000 });
             reloadTable()
         }
     })

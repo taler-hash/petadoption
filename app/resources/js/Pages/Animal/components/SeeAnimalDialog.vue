@@ -4,6 +4,10 @@
             <div class="flex items-center lg:flex-row flex-col space-x-2">
                 <div class="w-full lg:w-fit space-y-3">
                     <div class="flex flex-col gap-2">
+                        <label for="status">Shelter</label>
+                        <LazySelect label="name" module="shelters" v-model="form.shelter_id" :disabled="true" />
+                    </div>
+                    <div class="flex flex-col gap-2">
                         <label for="status">Status</label>
                         <InputText id="status" v-model="form.status" aria-describedby="status-help" disabled />
                     </div>
@@ -13,7 +17,8 @@
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="type">Type</label>
-                        <Select id="type" v-model="form.type" :options="['dog', 'cat']" aria-describedby="type-help" disabled />
+                        <Select id="type" v-model="form.type" :options="['dog', 'cat']" aria-describedby="type-help"
+                            disabled />
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="color">color</label>
@@ -25,8 +30,8 @@
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="description">description</label>
-                        <InputText id="description" v-model="form.description" aria-describedby="description-help"
-                            disabled />
+                        <Textarea id="description" v-model="form.description" aria-describedby="description-help"
+                            rows="5" cols="30" disabled />
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="age">age</label>
@@ -34,19 +39,21 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-2 w-64 order-first lg:order-last">
-                    <img v-if="form.media?.[0].original_url" :src="form.media?.[0].original_url" alt="Image" class="shadow-md rounded-xl w-64" />
+                    <img v-if="form.media?.[0].original_url" :src="form.media?.[0].original_url" alt="Image"
+                        class="shadow-md rounded-xl w-64" />
                 </div>
             </div>
         </div>
     </Dialog>
 </template>
 <script setup lang="ts">
-import { InputText, Select, InputNumber } from 'primevue';
+import { InputText, Select, InputNumber, Textarea } from 'primevue';
 import { Dialog } from 'primevue';
 import { inject, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { AnimalTypes } from '../Types/AnimalTypes'
 import { useToast } from 'primevue';
+import LazySelect from '@/Components/Lazyselect/LazySelect.vue';
 
 const toast = useToast()
 const form = useForm<AnimalTypes>({
@@ -64,7 +71,6 @@ const reloadTable = inject<any>('reloadTable')
 const visible = ref<boolean>(false)
 
 function open(props: AnimalTypes) {
-    console.log(props)
     form.defaults(props)
     form.reset()
     visible.value = true
