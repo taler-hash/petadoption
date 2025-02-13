@@ -6,8 +6,9 @@
             isOpen ? 'w-64' : 'w-16'
         ]" class="h-full fixed lg:relative flex flex-col !z-[999]">
             <div class="w-full flex items-start px-2">
-                <Button @click="toggleSidebar" class="p-4 focus:outline-none lg:hidden" icon="pi pi-align-justify"
-                    text />
+                <Button @click="toggleSidebar" class="p-4 focus:outline-none lg:hidden " text>
+                    <AlignJustify />
+                </Button>
             </div>
             <!-- Toggle Button -->
 
@@ -17,7 +18,9 @@
                     <Button :key="item.name" @click="item.callBack" v-if="item.show"
                         class="flex items-center px-4 py-2 text-gray-700 hover:bg-white transition-all !justify-start"
                         :class="{ 'justify-center': !isOpen }" text>
-                        <div class="w-6 h-6" :class="item.icon" />
+                            <div class="w-6 h-6 pl-2">
+                                <component :is="item.icon"/>
+                            </div>
                         <span v-if="isOpen" class="ml-4">{{ item.name }}</span>
                     </Button>
                 </template>
@@ -37,39 +40,40 @@ import { ref } from 'vue';
 import { Button } from 'primevue';
 import { router } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
+import { AlignJustify, Calendar, Heart, Home, User } from 'lucide-vue-next';
 
 const page = usePage<any>()
 const isOpen = ref(false);
 const toggleSidebar = () => (isOpen.value = !isOpen.value);
 
-const navItems = ref<any>([
+const navItems = ref([
     {
         name: 'Staffs',
-        icon: 'pi pi-user',
+        icon: User,
         callBack: (() => router.visit('staffs')),
         show: page.props.auth.user.roles.some((v: any) => ['admin'].includes(v.name))
     },
     {
         name: 'Shelters',
-        icon: 'pi pi-home',
+        icon: Home,
         callBack: (() => router.visit('shelters')),
         show: page.props.auth.user.roles.some((v: any) => ['admin'].includes(v.name))
     },
     {
         name: 'Animals',
-        icon: 'pi pi-heart-fill',
+        icon: Heart,
         callBack: (() => router.visit('animals')),
         show: page.props.auth.user.roles.some((v: any) => ['staff'].includes(v.name))
     },
     {
         name: 'Appointments',
-        icon: 'pi pi-calendar',
+        icon: Calendar,
         callBack: (() => router.visit('appointments')),
         show: page.props.auth.user.roles.some((v: any) => ['staff'].includes(v.name))
     },
     {
         name: 'Adoptions',
-        icon: 'pi pi-home',
+        icon: Home,
         callBack: (() => router.visit('adoptions')),
         show: page.props.auth.user.roles.some((v: any) => ['staff'].includes(v.name))
     },

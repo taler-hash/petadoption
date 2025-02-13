@@ -19,7 +19,9 @@
                                 <p class="text-lg font-bold">{{ shelter.name }}</p>
                             </div>
                             <div class="">
-                                <Button icon="pi pi-chevron-left" severity="ghost" @click="handleBack"/>
+                                <Button severity="ghost" @click="handleBack">
+                                    <ChevronLeft/>
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -73,6 +75,7 @@ import { onMounted, provide, ref } from 'vue';
 import axios from 'axios';
 import Shelters from './Shelters.vue';
 import { ShelterTypes } from '@/Pages/Shelter/Types/ShelterTypes';
+import { ChevronLeft } from 'lucide-vue-next';
 
 const shelter = ref<ShelterTypes>({})
 const data = ref<AnimalPaginationTypes>()

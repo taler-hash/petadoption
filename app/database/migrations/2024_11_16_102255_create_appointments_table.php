@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('appointment_date');
             $table->enum('status', ['pending', 'confirmed', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

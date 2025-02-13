@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/update', 'update')->name('staffs.update');
         Route::delete('/delete', 'delete')->name('staffs.delete');
         Route::get('/count', 'count')->name('staffs.count');
+        Route::post('/restore', 'restore')->name('staffs.restore');
+        Route::delete('/forcedelete', 'forceDelete')->name('staffs.forceDelete');
     });
 
     // Animals
@@ -51,6 +53,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit', 'edit')->name('animals.edit');
             Route::put('/update', 'update')->name('animals.update');
             Route::delete('/delete', 'delete')->name('animals.delete');
+            Route::post('/restore', 'restore')->name('animals.restore');
+            Route::delete('/forcedelete', 'forceDelete')->name('animals.forceDelete');
+
         });
         
     });
@@ -69,6 +74,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/update', 'update')->name('appointments.update');
         Route::delete('/delete', 'delete')->name('appointments.delete');
         Route::get('/count', 'count')->name('appointments.count');
+        Route::post('/restore', 'restore')->name('appointments.restore');
+        Route::delete('/forcedelete', 'forceDelete')->name('appointments.forceDelete');
     });
 
     // Shelters
@@ -88,6 +95,8 @@ Route::middleware('auth')->group(function () {
             Route::put('/update', 'update')->name('update');
             Route::delete('/delete', 'delete')->name('delete');
             Route::get('/count', 'count')->name('count');
+            Route::post('/restore', 'restore')->name('restore');
+            Route::delete('/forcedelete', 'forceDelete')->name('forceDelete');
         });
         
     });

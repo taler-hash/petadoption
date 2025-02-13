@@ -3,6 +3,7 @@ import { AnimalTypes } from "@/Pages/Animal/Types/AnimalTypes"
 import { AppointmentTypes } from "@/Pages/Appointment/Types/AppointmentTypes"
 
 export interface FilterShelterTypes {
+    trash?: boolean,
     page?: number,
     sortBy?: string,
     sortType?: 'desc'|'asc'|string,

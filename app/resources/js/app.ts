@@ -11,6 +11,7 @@ import { AdoptionPresets } from './presets/AdoptionPresets';
 import { Ripple } from 'primevue';
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+import 'material-icons/iconfont/material-icons.css';
 
 const appName = import.meta.env.VITE_APP_NAME;
 

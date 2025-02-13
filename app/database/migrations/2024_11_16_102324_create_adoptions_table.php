@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('animal_id')->constrained('animals')->onDelete('cascade');
             $table->dateTime('adoption_date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

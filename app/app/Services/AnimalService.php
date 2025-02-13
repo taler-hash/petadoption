@@ -8,7 +8,10 @@ class AnimalService {
 
     public function getAnimals($request) {
         $model = new Animal();
-        $animals = Animal::with(['media', 'shelter'])
+        $animals = Animal::when($request->trash === 'true', function($q) {
+            $q->onlyTrashed();
+        })
+        ->with(['media', 'shelter'])
         ->whereAny($model->getFillable(), 'LIKE', "%{$request->searchString}%")
         ->when(!empty($request?->shelter), function($q) use ($request) {
             $q->where('shelter_id', $request->shelter);
@@ -48,6 +51,14 @@ class AnimalService {
 
     public function deleteAnimal($request) {
         Animal::find($request->id)->delete();
+    }
+
+    public function forceDeleteAnimal($request) {
+        Animal::withTrashed()->find($request->id)->forceDelete();
+    }
+
+    public function restoreAnimal($request) {
+        Animal::withTrashed()->find($request->id)->restore();
     }
 
     public function getAnimalCount() {

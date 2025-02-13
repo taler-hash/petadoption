@@ -13,7 +13,7 @@
                     <span :class="item.icon" />
                     <span class="ml-2">{{ item.label }}</span>
                     <span v-if="item.shortcut"
-                        class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{{
+                    class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{{
                             item.shortcut
                         }}</span>
                     <i v-if="hasSubmenu"

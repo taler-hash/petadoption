@@ -15,7 +15,10 @@ class AppointmentService {
     public function getAppointments($request) {
         $model = new Appointment();
 
-        $appointments = Appointment::with(['animal.media', 'animal.shelter', 'adopter'])
+        $appointments = Appointment::when($request->trash === 'true', function($q) {
+            $q->onlyTrashed();
+        })
+        ->with(['animal.media', 'animal.shelter', 'adopter'])
         ->whereAny($model->getFillable(), 'LIKE', "%{$request->searchString}%")
         ->when(!empty($request?->shelter), function($q) use ($request) {
             $q->where('shelter_id', $request->shelter);
@@ -68,6 +71,20 @@ class AppointmentService {
         $appointment = Appointment::find($request->id)->first();
         $this->checkIntegrity(Appointment::class, $this->createRequest($appointment), function() use ($request) {
             Appointment::find($request->id)->delete();
+        }, ['integrity' => true, 'exist' => true]);
+    }
+
+    public function restoreAppointment($request) {
+        $appointment = Appointment::find($request->id)->first();
+        $this->checkIntegrity(Appointment::withTrashed(), $this->createRequest($appointment), function() use ($request) {
+            Appointment::withTrashed()->find($request->id)->restore();
+        }, ['integrity' => true, 'exist' => true]);
+    }
+
+    public function forceDeleteAppointment($request) {
+        $appointment = Appointment::find($request->id)->first();
+        $this->checkIntegrity(Appointment::withTrashed(), $this->createRequest($appointment), function() use ($request) {
+            Appointment::withTrashed()->find($request->id)->forceDelete();
         }, ['integrity' => true, 'exist' => true]);
     }
 

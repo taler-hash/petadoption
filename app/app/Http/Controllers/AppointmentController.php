@@ -60,6 +60,14 @@ class AppointmentController extends Controller
         $this->appointmentService->deleteAppointment($request);
     }
 
+    public function forceDelete(Request $request) {
+        $this->appointmentService->forceDeleteAppointment($request);
+    }
+
+    public function restore(Request $request) {
+        $this->appointmentService->restoreAppointment($request);
+    }
+
     public function count(){
         return response()->json($this->appointmentService->getAppointmentCount());
     }

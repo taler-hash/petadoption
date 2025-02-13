@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Animal;
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Shelter extends Model
 {
+    use SoftDeletes;
+    
     protected $fillable = [
         'name',
         'location'

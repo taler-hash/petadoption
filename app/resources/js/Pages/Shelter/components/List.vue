@@ -4,11 +4,20 @@
         :rowsPerPageOptions="[5, 10, 20, 50]">
         <template #header>
             <div class="flex flex-wrap items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <SearchInput v-model="filters.searchString" @callback="reloadTable()" />
+                <div class="flex flex-wrap items-center space-x-4">
+                    <div class="font-bold text-xl">{{ filters.trash ? 'Trash' : 'List' }}</div>
+                    <div class="flex items-center space-x-2">
+                        <SearchInput v-model="filters.searchString" @callback="reloadTable()" />
+                    </div>
                 </div>
-                <div class="flex items-center-space-x-2">
-                    <Button outlined icon="pi pi-plus" severity="success" @click="$refs.ssd?.open()" />
+                <div class="flex items-center space-x-2">
+                    <Button outlined :severity="`${!filters.trash ? 'danger' : 'info'}`" @click="handleDisplayTrash()">
+                        <Trash v-if="!filters.trash"/>
+                        <List v-else/>
+                    </Button>
+                    <Button outlined severity="success" @click="$refs.ssd?.open()">
+                        <Plus/>
+                    </Button>
                 </div>
             </div>
         </template>
@@ -18,11 +27,27 @@
             <template #header>
                 <p class="text-center w-full">Actions</p>
             </template>
-            <template #body="props">
+            <template v-if="!filters.trash" #body="props">
                 <div class="flex flex-nowrap justify-center">
-                    <Button severity="info" icon="pi pi-eye" text @click="$refs.sesd?.open(props.data)" />
-                    <Button severity="warn" icon="pi pi-pencil" text @click="$refs.usd?.open(props.data)" />
-                    <Button severity="danger" icon="pi pi-times" text @click="handleDeleteUser(props.data.id)" />
+                    <Button severity="info" text @click="$refs.sesd?.open(props.data)">
+                        <Eye/>
+                    </Button>
+                    <Button severity="warn" text @click="$refs.usd?.open(props.data)">
+                        <Edit/>
+                    </Button>
+                    <Button severity="danger" text @click="handleDeleteShelter(props.data.id)">
+                        <Trash/>
+                    </Button>
+                </div>
+            </template>
+            <template v-else #body="props">
+                <div class="flex flex-nowrap justify-center">
+                    <Button severity="success" text @click="handleRestoreShelter(props.data.id)">
+                        <Recycle/>
+                    </Button>
+                    <Button severity="ghost" text @click="handleForceDeleteShelter(props.data.id)">
+                        <X/>
+                    </Button>
                 </div>
             </template>
         </Column>
@@ -46,6 +71,7 @@ import { FilterShelterTypes, ShelterPaginationTypes } from '../Types/ShelterType
 import { useConfirm } from 'primevue';
 import { useForm } from '@inertiajs/vue3';
 import { useToast } from 'primevue';
+import { Edit, Eye, Recycle, X, Trash, Plus, List } from 'lucide-vue-next';
 
 const toast = useToast()
 const form = useForm<{ id?: number }>({})
@@ -53,6 +79,7 @@ const confirm = useConfirm()
 const props = defineProps(['role'])
 const data = ref<ShelterPaginationTypes>()
 const filters = ref<FilterShelterTypes>({
+    trash: false,
     page: 1,
     sortBy: 'id',
     sortType: 'desc',
@@ -90,26 +117,76 @@ const handleSearch = useDebounceFn(() => {
     reloadTable()
 }, 1000)
 
-function handleDeleteUser(id: number) {
+function handleDeleteShelter(id: number) {
     confirm.require({
-        message: `Are you sure you want to delete this Shelter`,
+        message: `Are you sure you want to trash this Shelter`,
         header: 'Confirmation',
         icon: 'pi pi-info-circle',
         accept: () => {
-            submitDeleteUser(id)
+            submitDeleteShelter(id)
         }
     })
 }
 
-function submitDeleteUser(id: number) {
+function submitDeleteShelter(id: number) {
     form.defaults({ id: id })
     form.reset()
     form.delete(route('shelters.delete'), {
         onSuccess: () => {
-            toast.add({ severity: 'success', summary: 'Success', detail: `Deleted Shelter Successfully`, life: 3000 });
+            toast.add({ severity: 'success', summary: 'Success', detail: `Trashed Shelter Successfully`, life: 3000 });
             reloadTable()
         }
     })
+}
+
+function handleRestoreShelter(id: number) {
+    confirm.require({
+        message: `Are you sure you want to restore this Shelter`,
+        header: 'Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            submitRestoreShelter(id)
+        }
+    })
+}
+
+function submitRestoreShelter(id: number) {
+    form.defaults({ id: id })
+    form.reset()
+    form.post(route('shelters.restore'), {
+        onSuccess: () => {
+            toast.add({ severity: 'success', summary: 'Success', detail: `Restored Shelter Successfully`, life: 3000 });
+            reloadTable()
+        }
+    })
+}
+
+function handleForceDeleteShelter(id: number) {
+    confirm.require({
+        message: `Are you sure you want to permanently delete this Shelter`,
+        header: 'Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            submitForceDeleteShelter(id)
+        }
+    })
+}
+
+function submitForceDeleteShelter(id: number) {
+    form.defaults({ id: id })
+    form.reset()
+    form.delete(route('shelters.forceDelete'), {
+        onSuccess: () => {
+            toast.add({ severity: 'success', summary: 'Success', detail: `Permanently Deleted Shelter Successfully`, life: 3000 });
+            reloadTable()
+        }
+    })
+}
+
+function handleDisplayTrash() {
+    filters.value.trash = !filters.value.trash
+
+    reloadTable()
 }
 
 provide('reloadTable', reloadTable)

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('age')->nullable();
             $table->enum('status', ['available', 'adopted', 'pending'])->default('available');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

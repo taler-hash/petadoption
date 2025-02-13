@@ -61,6 +61,14 @@ class ShelterController extends Controller
         $this->shelterService->deleteShelter($request);
     }
 
+    public function restore(Request $request) {
+        $this->shelterService->restoreShelter($request);
+    }
+
+    public function forceDelete(Request $request) {
+        $this->shelterService->forceDeleteShelter($request);
+    }
+
     public function count() {
         return response()->json($this->shelterService->getShelterCount());
     }

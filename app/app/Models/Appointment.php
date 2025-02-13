@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[ObservedBy([AppointmentObserver::class])]
 class Appointment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     
     protected $appends = [
         'parsed_appointment_date',

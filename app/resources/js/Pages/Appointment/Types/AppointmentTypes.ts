@@ -2,6 +2,7 @@ import { AdopterTypes } from "@/Pages/Adopter/Types/AdopterTypes";
 import { AnimalTypes } from "@/Pages/Animal/Types/AnimalTypes";
 
 export interface FilterAppointmentTypes {
+    trash: boolean,
     page?: number,
     sortBy?: string,
     sortType?: 'desc'|'asc'|string,

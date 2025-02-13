@@ -4,15 +4,24 @@
         :rowsPerPageOptions="[5, 10, 20, 50]">
         <template #header>
             <div class="flex flex-wrap items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <SearchInput v-model="filters.searchString" @callback="reloadTable()" />
-                    <div v-if="!$page.props.auth.user?.shelter">
-                        <LazySelect module="shelters" label="name" v-model="filters.shelter" @callback="reloadTable()"
-                            placeholder="Select Shelter" />
+                <div class="flex flex-wrap items-center space-x-4">
+                    <div class="font-bold text-xl">{{ filters.trash ? 'Trash' : 'List' }}</div>
+                    <div class="flex items-center space-x-2">
+                        <SearchInput v-model="filters.searchString" @callback="reloadTable()" />
+                        <div v-if="!$page.props.auth.user?.shelter">
+                            <LazySelect module="shelters" label="name" v-model="filters.shelter"
+                                @callback="reloadTable()" placeholder="Select Shelter" />
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center-space-x-2">
-                    <Button outlined icon="pi pi-plus" severity="success" @click="$refs.ssd?.open()" />
+                <div class="flex items-center space-x-2">
+                    <Button outlined :severity="`${!filters.trash ? 'danger' : 'info'}`" @click="handleDisplayTrash()">
+                        <Trash v-if="!filters.trash"/>
+                        <List v-else/>
+                    </Button>
+                    <Button outlined severity="success" @click="$refs.ssd?.open()">
+                        <Plus/>
+                    </Button>
                 </div>
             </div>
         </template>
@@ -38,9 +47,25 @@
             </template>
             <template #body="props">
                 <div class="flex flex-nowrap justify-center">
-                    <Button severity="info" icon="pi pi-eye" text @click="$refs.sesd?.open(props.data)" />
-                    <Button severity="warn" icon="pi pi-pencil" text @click="$refs.usd?.open(props.data)" />
-                    <Button severity="danger" icon="pi pi-times" text @click="handleDeleteUser(props.data.id)" />
+                    <template v-if="!filters.trash">
+                        <Button severity="info" text @click="$refs.sesd?.open(props.data)">
+                            <Eye/>
+                        </Button>
+                        <Button severity="warn" text @click="$refs.usd?.open(props.data)">
+                            <Edit/>
+                        </Button>
+                        <Button severity="danger" text @click="handleDeleteAnimal(props.data.id)">
+                            <Trash />    
+                        </Button>
+                    </template>
+                    <template v-else>
+                        <Button severity="success" text @click="handleRestoreAnimal(props.data.id)">
+                            <Recycle/>
+                        </Button>
+                        <Button severity="ghost" text @click="handleForceDeleteAnimal(props.data.id)">
+                            <X/>
+                        </Button>
+                    </template>
                 </div>
             </template>
         </Column>
@@ -67,6 +92,7 @@ import { useToast } from 'primevue';
 import { AnimalStatusSeverity } from '@/api/AnimalStatusSeverity';
 import LazySelect from '@/Components/Lazyselect/LazySelect.vue';
 import { usePage } from '@inertiajs/vue3';
+import { Edit, Eye, Recycle, X, Trash, Plus, List } from 'lucide-vue-next';
 
 const page = usePage();
 const toast = useToast()
@@ -75,6 +101,7 @@ const confirm = useConfirm()
 const props = defineProps(['role'])
 const data = ref<AnimalPaginationTypes>()
 const filters = ref<FilterAnimalTypes>({
+    trash: false,
     page: 1,
     sortBy: 'id',
     sortType: 'desc',
@@ -114,26 +141,76 @@ const handleSearch = useDebounceFn(() => {
     reloadTable()
 }, 1000)
 
-function handleDeleteUser(id: number) {
+function handleDeleteAnimal(id: number) {
     confirm.require({
-        message: `Are you sure you want to delete this Animal`,
+        message: `Are you sure you want to trash this Animal`,
         header: 'Confirmation',
         icon: 'pi pi-info-circle',
         accept: () => {
-            submitDeleteUser(id)
+            submitDeleteAnimal(id)
         }
     })
 }
 
-function submitDeleteUser(id: number) {
+function submitDeleteAnimal(id: number) {
     form.defaults({ id: id })
     form.reset()
     form.delete(route('animals.delete'), {
         onSuccess: () => {
-            toast.add({ severity: 'success', summary: 'Success', detail: `Deleted Animal Successfully`, life: 3000 });
+            toast.add({ severity: 'success', summary: 'Success', detail: `Trashed Animal Successfully`, life: 3000 });
             reloadTable()
         }
     })
+}
+
+function handleRestoreAnimal(id: number) {
+    confirm.require({
+        message: `Are you sure you want to restore this Animal`,
+        header: 'Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            submitRestoreAnimal(id)
+        }
+    })
+}
+
+function submitRestoreAnimal(id: number) {
+    form.defaults({ id: id })
+    form.reset()
+    form.post(route('animals.restore'), {
+        onSuccess: () => {
+            toast.add({ severity: 'success', summary: 'Success', detail: `Restored Animal Successfully`, life: 3000 });
+            reloadTable()
+        }
+    })
+}
+
+function handleForceDeleteAnimal(id: number) {
+    confirm.require({
+        message: `Are you sure you want to permanently delete this Animal`,
+        header: 'Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            submitForceDeleteAnimal(id)
+        }
+    })
+}
+
+function submitForceDeleteAnimal(id: number) {
+    form.defaults({ id: id })
+    form.reset()
+    form.delete(route('animals.forceDelete'), {
+        onSuccess: () => {
+            toast.add({ severity: 'success', summary: 'Success', detail: `Permanently Deleted Animal Successfully`, life: 3000 });
+            reloadTable()
+        }
+    })
+}
+
+function handleDisplayTrash() {
+    filters.value.trash = !filters.value.trash
+
+    reloadTable()
 }
 
 provide('reloadTable', reloadTable)

@@ -36,13 +36,14 @@
             </template>
             <template #body="props">
                 <div class="flex flex-nowrap justify-center">
-                    <Button severity="warn" icon="pi pi-pencil" text @click="$refs.usd?.open(props.data)" :class="{'invisible': ['completed', 'cancelled'].includes(props.data.status)}"/>
+                    <Button severity="warn" text @click="$refs.usd?.open(props.data)" :class="{'invisible': ['completed', 'cancelled'].includes(props.data.status)}">
+                        <Edit/>
+                    </Button>
                 </div>
             </template>
         </Column>
     </DataTable>
     <SeeAdopterDialog ref="seadd" />
-    <SeeAnimalDialog ref="sead" />
     <UpdateAppointmentDialog ref="usd" />
 </template>
 <script setup lang="ts">
@@ -58,10 +59,10 @@ import { useDebounceFn } from '@vueuse/core';
 import { useConfirm } from 'primevue';
 import { useForm } from '@inertiajs/vue3';
 import { useToast } from 'primevue';
-import SeeAnimalDialog from '@/Pages/Animal/components/SeeAnimalDialog.vue';
 import { AppointmentPaginationTypes, FilterAppointmentTypes } from '../Types/AppointmentTypes';
 import SeeAdopterDialog from '@/Pages/Adopter/components/SeeAdopterDialog.vue';
 import { AppointmentStatusSeverity } from '@/api/AppointmentStatusSeverity';
+import { Edit } from 'lucide-vue-next';
 
 const toast = useToast()
 const form = useForm<{ id?: number }>({})
@@ -69,6 +70,7 @@ const confirm = useConfirm()
 const props = defineProps(['role'])
 const data = ref<AppointmentPaginationTypes>()
 const filters = ref<FilterAppointmentTypes>({
+    trash: false,
     page: 1,
     sortBy: 'id',
     sortType: 'desc',
@@ -106,30 +108,76 @@ const handleSearch = useDebounceFn(() => {
     reloadTable()
 }, 1000)
 
-function handleDeleteAppointment(id: number) {
+function handleDeleteAppoinment(id: number) {
     confirm.require({
-        message: `Are you sure you want to delete this Appointment`,
+        message: `Are you sure you want to trash this Appoinment`,
         header: 'Confirmation',
         icon: 'pi pi-info-circle',
         accept: () => {
-            submitDeleteAdppointment(id)
+            submitDeleteAppoinment(id)
         }
     })
-
 }
 
-function submitDeleteAdppointment(id: number) {
+function submitDeleteAppoinment(id: number) {
     form.defaults({ id: id })
     form.reset()
-    form.delete(route('appointments.delete'), {
+    form.delete(route('animals.delete'), {
         onSuccess: () => {
-            toast.add({ severity: 'success', summary: 'Success', detail: `Deleted Appointment Successfully`, life: 3000 });
+            toast.add({ severity: 'success', summary: 'Success', detail: `Trashed Appoinment Successfully`, life: 3000 });
             reloadTable()
-        },
-        onError: () => {
-            toast.add({ severity: 'error', summary: 'Error', detail: `Details is outdated record will be refreshed`, life: 3000 });
         }
     })
+}
+
+function handleRestoreAppoinment(id: number) {
+    confirm.require({
+        message: `Are you sure you want to restore this Appoinment`,
+        header: 'Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            submitRestoreAppoinment(id)
+        }
+    })
+}
+
+function submitRestoreAppoinment(id: number) {
+    form.defaults({ id: id })
+    form.reset()
+    form.post(route('animals.restore'), {
+        onSuccess: () => {
+            toast.add({ severity: 'success', summary: 'Success', detail: `Restored Appoinment Successfully`, life: 3000 });
+            reloadTable()
+        }
+    })
+}
+
+function handleForceDeleteAppoinment(id: number) {
+    confirm.require({
+        message: `Are you sure you want to permanently delete this Appoinment`,
+        header: 'Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            submitForceDeleteAppoinment(id)
+        }
+    })
+}
+
+function submitForceDeleteAppoinment(id: number) {
+    form.defaults({ id: id })
+    form.reset()
+    form.delete(route('animals.forceDelete'), {
+        onSuccess: () => {
+            toast.add({ severity: 'success', summary: 'Success', detail: `Permanently Deleted Appoinment Successfully`, life: 3000 });
+            reloadTable()
+        }
+    })
+}
+
+function handleDisplayTrash() {
+    filters.value.trash = !filters.value.trash
+
+    reloadTable()
 }
 
 provide('reloadTable', reloadTable)

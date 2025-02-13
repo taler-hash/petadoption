@@ -6,7 +6,10 @@ use App\Models\User;
 class UserService {
     public function getUsers($request) {
         $model = new User();
-        $users = User::with('shelter')
+        $users = User::when($request->trash === 'true', function($q) {
+            $q->onlyTrashed();
+        })
+        ->with('shelter')
         ->when(!empty($request?->shelter), function($q) use ($request) {
             $q->where('shelter_id', $request->shelter);
         })
@@ -36,6 +39,14 @@ class UserService {
 
     public function deleteUser($request) {
         User::find($request->id)->delete();
+    }
+
+    public function forceDeleteUser($request) {
+        User::withTrashed()->find($request->id)->forceDelete();
+    }
+
+    public function restoreUser($request) {
+        User::withTrashed()->find($request->id)->restore();
     }
 
     public function getUserCount() {

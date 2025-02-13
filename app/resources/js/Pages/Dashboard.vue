@@ -16,7 +16,9 @@
                         <div class="bg-white w-full p-4 border rounded-lg shadow-sm ">
                             <div class="flex items-center justify-between pb-4">
                                 <p class="font-black text-2xl capitalize">{{ card.name }}</p>
-                                <span class="!text-4xl" :class="card.icon"></span>
+                                <span class="!text-4xl">
+                                    <component :is="card.icon"/>
+                                </span>
                             </div>
                             <div>
                                 <Suspense>
@@ -38,12 +40,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
+import { House, Heart, Users, Calendar } from 'lucide-vue-next';
 
 interface CountTypes {
     [key: string]: {
         name: string,
         count: number,
-        icon: string
+        icon: any
     }
 }
 
@@ -60,28 +63,28 @@ onMounted(() => {
 async function getStaffs() {
     if (page.props.auth.user.roles[0].name !== 'admin') return
 
-    structureCount('staffs', 'pi-users')
+    structureCount('staffs', Users)
 }
 
 async function getAppointments() {
-    structureCount('appointments', 'pi-calendar')
+    structureCount('appointments', Calendar)
 }
 
 async function getAdoptions() {
-    structureCount('adoptions', 'pi-home')
+    structureCount('adoptions', House)
 }
 
 async function getAnimals() {
-    structureCount('animals', 'pi-heart')
+    structureCount('animals', Heart)
 }
 
-function structureCount(module: string, _icon: string) {
+function structureCount(module: string, _icon: any) {
     axios.get(route(`${module}.count`))
         .then((res) => {
             counts.value[module] = {
                 name: module,
                 count: res.data,
-                icon: `pi ${_icon}`
+                icon: _icon
             }
         })
 }

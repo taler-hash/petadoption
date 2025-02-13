@@ -7,7 +7,10 @@ class ShelterService {
 
     public function getShelters($request) {
         $model = new Shelter();
-        $shelters = Shelter::with(['animals', 'staffs'])
+        $shelters = Shelter::when($request->trash === 'true', function($q) {
+            $q->onlyTrashed();
+        })
+        ->with(['animals', 'staffs'])
         ->whereAny($model->getFillable(), 'LIKE', "%{$request->searchString}%")
         ->when($request?->type, function($q) use ($request) {
             $q->where('type', $request->type);
@@ -34,6 +37,14 @@ class ShelterService {
 
     public function deleteShelter($request) {
         Shelter::find($request->id)->delete();
+    }
+
+    public function forceDeleteShelter($request) {
+        Shelter::withTrashed()->find($request->id)->forceDelete();
+    }
+    
+    public function restoreShelter($request) {
+        Shelter::withTrashed()->find($request->id)->restore();
     }
 
     public function getShelterCount() {

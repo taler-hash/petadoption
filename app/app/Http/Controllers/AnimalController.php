@@ -61,6 +61,14 @@ class AnimalController extends Controller
         $this->animalService->deleteAnimal($request);
     }
 
+    public function forceDelete(Request $request) {
+        $this->animalService->forceDeleteAnimal($request);
+    }
+
+    public function restore(Request $request) {
+        $this->animalService->restoreAnimal($request);
+    }
+
     public function count() {
         return response()->json($this->animalService->getAnimalCount());
     }

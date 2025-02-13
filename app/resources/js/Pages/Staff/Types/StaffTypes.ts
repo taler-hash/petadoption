@@ -1,6 +1,7 @@
 import { ShelterTypes } from "@/Pages/Shelter/Types/ShelterTypes"
 
 export interface FilterWithRoleTypes {
+    trash: boolean,
     page?: number,
     sortBy?: string,
     sortType?: 'desc'|'asc'|string,

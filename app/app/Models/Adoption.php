@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Adoption extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $appends= [
         'parsed_adoption_date'

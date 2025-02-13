@@ -60,6 +60,15 @@ class StaffController extends Controller
         $this->userService->deleteUser($request);
     }
 
+    public function restore(Request $request)
+    {
+        $this->userService->restoreUser($request);
+    }
+
+    public function forceDelete(Request $request) {
+        $this->userService->forceDeleteUser($request);
+    }
+
     public function count() {
         return response()->json($this->userService->getUserCount());
     }
