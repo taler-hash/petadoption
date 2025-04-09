@@ -32,7 +32,6 @@ const reloadTable = inject<any>('reloadTable')
 const visible = ref<boolean>(false)
 
 function open(props: AdopterTypes) {
-    console.log(props)
     form.defaults(props)
     form.reset()
     visible.value = true

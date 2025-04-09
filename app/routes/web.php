@@ -5,10 +5,10 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AdoptionController;
+use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\ShelterController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TrackController;
 use Inertia\Inertia;
 
 Route::get('/dashboard', function () {
@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/delete', 'delete')->name('animals.delete');
             Route::post('/restore', 'restore')->name('animals.restore');
             Route::delete('/forcedelete', 'forceDelete')->name('animals.forceDelete');
-
+            Route::get('/getadoptedanimals', 'getAdoptedAnimals')->name('animals.getAdoptedAnimals');
         });
         
     });
@@ -111,6 +111,24 @@ Route::middleware('auth')->group(function () {
         Route::get('/count', 'count')->name('adoptions.count');
     });
 
+    // Tracks
+    Route::controller(MonitorController::class)
+    ->prefix('/monitor')
+    ->name('monitor.')
+    ->middleware(['role:staff'])
+    ->group(function() {
+        Route::get('/', 'display')->name('display');
+        Route::get('/index', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/show', 'show')->name('show');
+        Route::get('/edit', 'edit')->name('edit');
+        Route::put('/update', 'update')->name('update');
+        Route::delete('/delete', 'delete')->name('delete');
+        Route::post('/restore', 'restore')->name('restore');
+        Route::delete('/forcedelete', 'forceDelete')->name('forceDelete');
+        Route::get('/count', 'count')->name('count');
+    });
 
 });
 

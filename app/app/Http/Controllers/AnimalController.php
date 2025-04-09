@@ -72,4 +72,8 @@ class AnimalController extends Controller
     public function count() {
         return response()->json($this->animalService->getAnimalCount());
     }
+
+    public function getAdoptedAnimals(Request $request) {
+        return response()->json($this->animalService->getAdoptedAnimals());
+    }
 }

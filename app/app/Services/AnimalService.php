@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace App\Services;
 use App\Models\Animal;
@@ -67,6 +67,10 @@ class AnimalService {
         return Animal::when(!empty($shelter), function($q) use ($shelter) {
             $q->where('shelter_id', $shelter);
         })->count();
+    }
+
+    public function getAdoptedAnimals() {
+        return Animal::where('status', '=', 'adopted')->get();
     }
     
 }
