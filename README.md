@@ -26,6 +26,9 @@ To deploy this app you need to follow this steps:
 8. To stop the app run this inside of the mentioned folder `docker compose down`
 9. After that you can access the application via `http://localhost`
 
+### PS
+1. Add schema in the database `adoption`
+
 ### Developer
 *Jurie Tylier Pedrogas ( Software Engineer )*
 
