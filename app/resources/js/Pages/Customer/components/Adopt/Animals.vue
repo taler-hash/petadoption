@@ -14,7 +14,7 @@
                 <template #header>
                     <div class="w-full flex justify-between">
                         <div class="w-full flex items-center justify-between space-x-4">
-                            <Select v-model="filters.type" :options="['dog', 'cat']" @change="reloadTable()"/>
+                            <Select v-model="filters.type" :options="['dog']" @change="reloadTable()"/>
                             <div class="">
                                 <p class="text-lg font-bold">{{ shelter.name }}</p>
                             </div>

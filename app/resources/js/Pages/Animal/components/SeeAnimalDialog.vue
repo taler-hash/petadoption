@@ -17,7 +17,7 @@
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="type">Type</label>
-                        <Select id="type" v-model="form.type" :options="['dog', 'cat']" aria-describedby="type-help"
+                        <Select id="type" v-model="form.type" :options="['dog']" aria-describedby="type-help"
                             disabled />
                     </div>
                     <div class="flex flex-col gap-2">
