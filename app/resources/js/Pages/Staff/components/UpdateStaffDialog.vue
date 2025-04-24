@@ -42,7 +42,8 @@ const toast = useToast()
 const form = useForm<UserTypes>({
     username: '',
     name: '',
-    shelter_id: undefined
+    shelter_id: undefined,
+    password: ''
 })
 const reloadTable = inject<any>('reloadTable')
 const visible = ref<boolean>(false)
