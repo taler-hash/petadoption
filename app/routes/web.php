@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AdoptionController;
 use App\Http\Controllers\MonitorController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ShelterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrackController;
@@ -130,18 +131,38 @@ Route::middleware('auth')->group(function () {
         Route::get('/count', 'count')->name('count');
     });
 
+    //Reports
+    Route::controller(ReportController::class)
+    ->prefix('/report')
+    ->name('reports.')
+    ->middleware(['role:staff'])
+    ->group(function() {
+        Route::get('/', 'display')->name('display');
+        Route::get('/index', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/show', 'show')->name('show');
+        Route::get('/edit', 'edit')->name('edit');
+        Route::put('/update', 'update')->name('update');
+        Route::delete('/delete', 'delete')->name('delete');
+        Route::post('/restore', 'restore')->name('restore');
+        Route::delete('/forcedelete', 'forceDelete')->name('forceDelete');
+        Route::get('/count', 'count')->name('count');
+    });
 });
 
 Route::prefix('/customer')
+->name('customers.')
 ->group(function() {
-    Route::get('/animals/index', [AnimalController::class, 'index'])->name('customers.animals.index');
-    Route::get('/shelters/index', [ShelterController::class, 'index'])->name('customers.shelters.index');
-    Route::post('/appointments/store', [AppointmentController::class, 'store'])->name('customers.appointments.store');
-    Route::get('/appointments/show', [AppointmentController::class, 'show'])->name('customers.appointments.show');
-    Route::get('/shelters/show', [ShelterController::class, 'show'])->name('customers.shelters.show');
+    Route::get('/animals/index', [AnimalController::class, 'index'])->name('animals.index');
+    Route::get('/shelters/index', [ShelterController::class, 'index'])->name('shelters.index');
+    Route::post('/appointments/store', [AppointmentController::class, 'store'])->name('appointments.store');
+    Route::get('/appointments/show', [AppointmentController::class, 'show'])->name('appointments.show');
+    Route::get('/shelters/show', [ShelterController::class, 'show'])->name('shelters.show');
+    Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
 });
 
-$customerPages = ['Welcome', 'Donate', 'Adopt', 'Track', 'Contact'];
+$customerPages = ['Welcome', 'Donate', 'Adopt', 'Track', 'Contact', 'Stray'];
 foreach($customerPages as $page) {
     $route = $page === "Welcome" ? '' : strtolower($page);
     Route::get("/".$route, function () use ($page) {

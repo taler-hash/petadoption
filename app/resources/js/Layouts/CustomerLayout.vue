@@ -57,6 +57,11 @@ const items = ref([
         label: 'CONTACT US',
         icon: 'pi pi-envelope',
         link: 'contact'
+    },
+    {
+        label: 'REPORT A STRAY',
+        icon: 'pi pi-megaphone',
+        link: 'report'
     }
 ]);
 

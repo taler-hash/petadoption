@@ -40,7 +40,7 @@ import { ref } from 'vue';
 import { Button } from 'primevue';
 import { router } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
-import { AlignJustify, Calendar, Heart, Home, User, MessageCircleHeart } from 'lucide-vue-next';
+import { AlignJustify, Calendar, Heart, Home, User, MessageCircleHeart, Megaphone } from 'lucide-vue-next';
 
 const page = usePage<any>()
 const isOpen = ref(false);
@@ -81,6 +81,12 @@ const navItems = ref([
         name: 'Track',
         icon: MessageCircleHeart,
         callBack: (() => router.visit('monitor')),
+        show: page.props.auth.user.roles.some((v: any) => ['staff'].includes(v.name))
+    },
+    {
+        name: 'Report',
+        icon: Megaphone,
+        callBack: (() => router.visit('report')),
         show: page.props.auth.user.roles.some((v: any) => ['staff'].includes(v.name))
     },
 ]);

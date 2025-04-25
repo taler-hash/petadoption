@@ -6,9 +6,12 @@ use App\Http\Requests\CreateMonitorRequest;
 use Illuminate\Http\Request;
 use App\Services\MonitorService;
 use Inertia\Inertia;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MonitorController extends Controller
 {
+
+    use SoftDeletes;
     /**
      * Display a listing of the resource.
      */

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('shelter_id')->constrained('shelters')->onDelete('cascade');
-            $table->enum('type', ['cat', 'dog']);   
+            $table->enum('type', ['dog']);   
             $table->string('name');
             $table->string('color')->nullable();
             $table->string('breed')->nullable();

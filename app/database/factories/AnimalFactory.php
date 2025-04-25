@@ -13,7 +13,7 @@ class AnimalFactory extends Factory
     public function definition()
     {
         return [
-            'type' => $this->faker->randomElement(['cat', 'dog']),
+            'type' => $this->faker->randomElement(['dog']),
             'name' => $this->faker->name,
             'description' => $this->faker->word,
             'breed' => $this->faker->word,
