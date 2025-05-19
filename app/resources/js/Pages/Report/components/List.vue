@@ -18,6 +18,11 @@
                 </div>
             </div>
         </template>
+        <Column header="Image">
+            <template #body="props">
+                <Avatar :image="props.data.media[0].original_url" class="mr-2" size="xlarge" shape="circle" />
+            </template>
+        </Column>
         <Column field="location" header="Location" sortable />
         <Column field="animal_status" header="Animal Status" sortable />
         <Column field="status" header="Status" sortable />

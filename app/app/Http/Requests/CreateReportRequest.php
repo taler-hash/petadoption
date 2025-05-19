@@ -28,6 +28,7 @@ class CreateReportRequest extends FormRequest
             'animal_status' => 'required|string|max:255',
             'status' => 'required|string|max:255',
             'contact_number' => 'nullable|string|max:15',
+            'image' => 'required'
         ];
     }
 }

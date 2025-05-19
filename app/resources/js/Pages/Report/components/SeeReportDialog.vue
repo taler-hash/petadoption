@@ -1,6 +1,10 @@
 <template>
     <Dialog v-model:visible="visible" modal :header="`Report`" @hide="close">
         <div class="space-y-4">
+            <div class="flex flex-col gap-2 w-64 order-first lg:order-last">
+                <img v-if="form.media?.[0].original_url" :src="form.media?.[0].original_url" alt="Image"
+                    class="shadow-md rounded-xl w-64" />
+            </div>
             <div class="flex flex-col gap-2">
                 <label for="location">Location</label>
                 <InputText id="location" v-model="form.location" aria-describedby="location-help" disabled />
@@ -37,7 +41,8 @@ const form = useForm<ReportTypes>({
     location: '',
     landmark: '',
     animal_status: 'healthy',
-    status: 'pending'
+    status: 'pending',
+    image: null
 })
 const reloadTable = inject<any>('reloadTable')
 const visible = ref<boolean>(false)

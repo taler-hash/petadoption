@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\ReportService;
 use Inertia\Inertia;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Validation\ValidationException;
 
 class ReportController extends Controller
 {

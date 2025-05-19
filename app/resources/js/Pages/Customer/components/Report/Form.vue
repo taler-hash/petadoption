@@ -13,6 +13,12 @@
                         <ChevronLeft />
                     </Button>
                 </div>
+                <div class="flex flex-col gap-2 w-full order-first lg:order-last items-center">
+                    <img v-if="form.image" :src="form.image" alt="Image" class="shadow-md rounded-xl w-64" />
+                    <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" choose-label="Choose Image"
+                        class="p-button-outlined" />
+                    <InputError :message="form.errors.image" />
+                </div>
                 <div class="flex flex-col gap-2">
                     <label for="location">Location</label>
                     <InputText
@@ -72,9 +78,10 @@ import Shelters from "./Shelters.vue";
 import { FilterAnimalTypes } from "@/Pages/Animal/Types/AnimalTypes";
 import { ref } from "vue";
 import axios from "axios";
-import { InputText, Button, Select, useToast } from "primevue";
+import { InputText, Button, Select, useToast, FileUpload } from "primevue";
 import { ShelterTypes } from "@/Pages/Shelter/Types/ShelterTypes";
 import { ChevronLeft } from "lucide-vue-next";
+import InputError from "@/Components/InputError.vue";
 
 const toast = useToast();
 const formOpen = ref<boolean>(false);
@@ -90,13 +97,14 @@ const filters = ref<FilterAnimalTypes>({
     shelter: undefined,
 });
 
-const form = useForm({
+const form = useForm<any>({
     shelter_id: "",
     location: "",
     landmark: "",
     animal_status: "healthy",
     status: "pending",
     contact_number: "",
+    image: null,
 });
 
 function getShelter() {
@@ -113,7 +121,6 @@ function getShelter() {
             console.log(err);
         });
 
-    console.log("test");
 }
 
 function handleBack() {
@@ -121,6 +128,17 @@ function handleBack() {
     shelter.value = {};
     form.reset();
     formOpen.value = false;
+}
+
+function onFileSelect(event: any) {
+    const file = event.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+        form.image = e.target?.result;
+    };
+
+    reader.readAsDataURL(file);
 }
 
 async function submit() {

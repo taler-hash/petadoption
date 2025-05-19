@@ -25,7 +25,11 @@ export interface ReportTypes {
     animal_status: 'healthy' | 'injury';
     status: 'pending' | 'rescued';
     contact_number?: string;
-    shelter?: ShelterTypes
+    shelter?: ShelterTypes;
+    media?: {
+        original_url?: string
+    }[],
+    image?: any,
 }
 
 export interface ReportPaginationTypes extends PaginationTypes {

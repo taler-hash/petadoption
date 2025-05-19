@@ -34,7 +34,7 @@
                                 <div class="bg-white flex justify-center rounded p-4">
                                     <div class="relative mx-auto">
                                         <div class="w-72 h-72 grid place-items-center bg-white">
-                                            <img class="rounded w-full" :src="item.media[0].original_url"
+                                            <img class="rounded h-72 object-fit" :src="item.media[0].original_url"
                                                 :alt="item.name" style="max-width: 300px" />
                                         </div>
                                         <div class="absolute bg-black/70 rounded-border" style="left: 4px; top: 4px">
