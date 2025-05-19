@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full">
-        <Menubar :model="items" class="sticky top-0 z-[999]">
+        <Menubar :model="items" class="sticky top-0 z-[999] !bg-red-600 !border-red-600">
             <template #start>
                 <div class="lg:pl-10">
                     <img :src="Logo" alt="" class="w-40 h-20 object-contain cursor-pointer" @click="handleRoute('')">
@@ -8,7 +8,7 @@
             </template>
             <template #item="{ item, props, hasSubmenu, root }">
                 <a v-ripple class="flex align-items-center rounded-lg"
-                    :class="{ 'bg-gray-200': page.url.replace('/', '') === item.link }" v-bind="props.action"
+                    :class="{ 'bg-red-300': page.url.replace('/', '') === item.link }" v-bind="props.action"
                     @click="handleRoute(item?.link)">
                     <span :class="item.icon" />
                     <span class="ml-2">{{ item.label }}</span>
@@ -61,7 +61,7 @@ const items = ref([
     {
         label: 'REPORT A STRAY',
         icon: 'pi pi-megaphone',
-        link: 'report'
+        link: 'stray'
     }
 ]);
 
